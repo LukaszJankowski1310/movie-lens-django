@@ -1,3 +1,4 @@
+from statistics import mean
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.template import loader
@@ -8,12 +9,39 @@ from django.contrib.auth.forms import AuthenticationForm
 
 from django.contrib import messages
 
+from .models import Movie, Genre, Rating, Comment
+
 
 # Create your views here.
 
 
 def index(request : HttpRequest):
-    return render(request=request, template_name="userview/index.html", context={})
+    movies = Movie.objects.order_by('-title')
+    return render(request=request, template_name="userview/index.html", context={'movies': movies})
+
+
+def search(request):
+    return render(request=request, template_name="userview/search.html", context={})
+
+
+def admin(request):
+    if not request.user.is_superuser:
+        return redirect('/')
+    
+    return render(request=request, template_name="userview/admin.html", context={})
+
+
+def movie(request, *args, **kwargs):
+    pk = kwargs['pk']
+    movie = Movie.objects.get(pk=pk)
+    comments = Comment.objects.filter(movie_id = movie.id)
+    ratings = Rating.objects.filter(movie_id = movie.id)
+    if ratings.count() == 0:
+        avg_rating = '---'
+    else:
+        avg_rating = round(mean([ r.value for r in ratings]), 2)
+
+    return render(request=request, template_name="userview/movie.html", context={'movie':movie, 'avg_rating': avg_rating, 'comments': comments})
 
 
 def register_request(request):
