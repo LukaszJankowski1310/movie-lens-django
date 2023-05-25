@@ -1,0 +1,31 @@
+{% extends "userview/layout.html" %}
+
+{% block content %}
+<p>MOVIE</p>
+
+<p>movie details</p>
+<p>{{ movie.title }}</p>
+
+<p> Genres: </p>
+<ul>
+{% for genre in movie.genres.all %}
+    <li>{{ genre.name }}</li>
+{% endfor %}
+</ul>
+
+<p>Comments:</p>
+<ul>
+{% for com in comments %}
+    <li>{{ com.text }} {{ com.date }} {{com.author}}</li>
+{% endfor %}
+</ul>
+
+<p>avg rating:</p>
+<p>{{ avg_rating }}</p>
+
+
+<p>if user logged in add comment button/form</p>
+
+<p>if admin logged in edit movie</p>
+
+{% endblock %}

@@ -4,8 +4,22 @@
 {% block content %}
 
 <div>
-    <p>Movie lens</p> <br>
-    test
+    <p>Movie lens</p>
+    <p>Lorem ipsum</p>
+    <p>popular movies</p>
+    <ul>
+    {% for movie in movies%}
+        <li>      
+            <a href="/movie/{{movie.id}}">{{  movie.title }}</a>
+        </li>
+    {% endfor%}
+    </ul>
+
+
+    {% if user.is_superuser %}
+        <p>recomended movies for logged in users</p>
+        <p>for now empty</p>
+    {% endif %}
 
 </div>
 
