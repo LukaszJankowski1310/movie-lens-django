@@ -1,8 +1,16 @@
 {% extends "userview/layout.html" %}
 
 {% block content %}
-<p>ADMIN</p>
+    <p>ADMIN</p>
+    <p>Form for adding new movies</p>
 
-<p>Form for adding new movies</p>
+    {% load crispy_forms_tags %}
+    <div class="container py-5">
+        <form method="POST">
+            {% csrf_token %}
+            {{ movie_form|crispy }}
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    </div>
 
 {% endblock %}

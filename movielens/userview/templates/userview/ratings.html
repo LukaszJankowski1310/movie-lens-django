@@ -1,0 +1,18 @@
+{% extends "userview/layout.html" %}
+
+{% block content %}
+
+{% if is_empty %}
+    <p>You don't have any ratings</p>
+{% else %}
+
+    <ul>
+    {% for rating in ratings %}
+        <li><a href="movie/{{ rating.movie.id }}">{{ rating.movie.title }}</a> {{ rating.value }}</li>
+    {% endfor %}
+    </ul>
+
+{% endif %}
+
+
+{% endblock %}

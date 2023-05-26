@@ -20,8 +20,11 @@
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
+          <li><a href="/" class="nav-link px-2 text-white">Home</a></li>
           <li><a href="/search" class="nav-link px-2 text-white">Search</a></li>
+          {% if user.is_authenticated %}
+            <li><a href="/ratings" class="nav-link px-2 text-white">Ratings</a></li>
+          {% endif %}
 
           {% if user.is_superuser %}
             <li><a href="/admin_view" class="nav-link px-2 text-white">Admin</a></li>
@@ -35,7 +38,7 @@
 
         <div class="text-end">
           {% if user.is_authenticated %}
-            <span>{{ user }}</span>
+            <span class="px-2 text-secondary">{{ user }}</span>
             <a href="/logout" class="btn btn-warning" >Logout</a>
           {% else %}
             <a href="/login" class="btn btn-outline-light me-2" >Login</a>
