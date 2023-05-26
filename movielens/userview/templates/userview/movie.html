@@ -1,10 +1,20 @@
 {% extends "userview/layout.html" %}
-
 {% block content %}
+
+
+{% if not movie %}
+
+<!-- No movie with given ID -->
+<p>there is no {{ id }} movie</p>
+
+{% else %}
+
+
 <p>MOVIE</p>
 
 <p>movie details</p>
-<p>{{ movie.title }}</p>
+<p>TITLE: {{ movie.title }}</p>
+<p>IMDB: {{ movie.imdb_ref }}</p>
 
 <p> Genres: </p>
 <ul>
@@ -24,8 +34,40 @@
 <p>{{ avg_rating }}</p>
 
 
-<p>if user logged in add comment button/form</p>
 
-<p>if admin logged in edit movie</p>
 
+
+{% if user.is_authenticated %}
+
+    {% if not is_rated %}
+        <p> <a href="/rate_movie/{{ movie.id}}">Rate this movie here</a></p>
+    {% else %}
+        <p> You rated this movie, value {{ rating_value }}</p>
+    {% endif %}
+
+    {% load crispy_forms_tags %}
+
+    <div class="container py-5">
+        <h1>Add new comment</h1>
+
+        <form method="POST" action="/post_comment">
+            {% csrf_token %}
+
+            {{ comment_form|crispy }}
+            <button class="btn btn-primary" type="submit">Comment</button>
+        </form>
+
+    </div>
+{% endif %}
+
+
+
+
+
+{% if user.is_superuser %}
+<p>You are admin and can edit this movie <a href="/edit/{{movie.id}}">EDIT</a></p>
+{% endif %}
+
+
+{% endif %}
 {% endblock %}

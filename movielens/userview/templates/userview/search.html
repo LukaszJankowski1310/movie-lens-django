@@ -1,11 +1,31 @@
 {% extends "userview/layout.html" %}
 
 {% block content %}
-<p>SEARCH</p>
 
-<p>search form</p>
+{% load crispy_forms_tags %}
 
-<p>search results</p>
+<div class="container py-5">
+    <h1>Search</h1>
 
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ search_form|crispy }}
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+
+</div>
+
+{% if results %}
+    <h1>search results:</h1>
+
+    {% for movie in results %}
+        <p>{{ movie.title }}</p>
+    {% endfor %}
+{% endif %}
+
+{% if no_results %}
+    <p>No results...</p>
+{% endif %}
 
 {% endblock %}
