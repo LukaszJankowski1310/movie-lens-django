@@ -3,24 +3,48 @@
 
 {% block content %}
 
-<div>
-    <p>Movie lens</p>
-    <p>Lorem ipsum</p>
-    <p>popular movies</p>
-    <ul>
-    {% for movie in movies%}
-        <li>      
-            <a href="/movie/{{movie.id}}">{{  movie.title }}</a>
-        </li>
-    {% endfor%}
-    </ul>
+<div class="px-4 py-4 text-center">
+    <h1 class="display-5 fw-bold">Movie lens</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+        </p> 
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+    <div class="col-8">
+        <h3 class="my-5">Popular movies</h3>
+       
+        {% for movie in movies %}
+        <div class="card my-2">
+            <div class="card-body">
+                <h4 class="card-title">{{  movie.0.title }}</h4>
+                <div class="row justify-content-evenly">
+                    <div class="col-6"><h5 class="card-subtitle mb-2 text-muted">Rating:  {{ movie.1 }}</h5></div>
+                    <div class="col-6 text-end"><a href="/movie/{{ movie.0.id }}" class="btn btn-primary text">Read more</a></div>
+                </div>
+                
+            </div>
+        </div>
+        {% endfor %}        
+
+    </div>    
+    </div>
 
 
     {% if user.is_superuser %}
-        <p>recomended movies for logged in users</p>
-        <p>for now empty</p>
+    <div class="row justify-content-center my-5">
+        <div class="col-8">
+            <h3>Recomendations</h3>
+            <p>Empty for now...</p>
+        </div>    
+    </div>
     {% endif %}
-
+    
 </div>
+
 
 {% endblock %}

@@ -16,16 +16,38 @@
 
 </div>
 
-{% if results %}
-    <h1>search results:</h1>
+<div class="container">
 
-    {% for movie in results %}
-        <p>{{ movie.title }}</p>
-    {% endfor %}
+{% if results %}
+<div class="row justify-content-center my-5">
+    <div class="col-8">
+        <h3 class="">Search results</h3>
+       
+        {% for movie in results %}
+        <div class="card my-2">
+            <div class="card-body">
+                <h4 class="card-title">{{  movie.0.title }}</h4>
+                <div class="row ">
+                    <div class="col-6"><h5 class="card-subtitle mb-2 text-muted">Rating:  {{ movie.1 }}</h5></div>
+                    <div class="col-6 text-end"><a href="/movie/{{ movie.id }}" class="btn btn-primary text">Read more</a></div>
+                </div>
+                
+            </div>
+        </div>
+        {% endfor %}        
+
+    </div>    
+</div>
 {% endif %}
 
 {% if no_results %}
-    <p>No results...</p>
+<div class="row justify-content-center">
+    <div class="col-8">
+        <h3 class="my-5">No results...</h3>
+    </div>
+</div>
 {% endif %}
+
+</div>
 
 {% endblock %}
