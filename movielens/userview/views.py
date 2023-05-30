@@ -18,8 +18,18 @@ from .models import Movie, Genre, Rating, Comment
 
 
 def index(request : HttpRequest):
-    movies = Movie.objects.order_by('-title')
-    return render(request=request, template_name="userview/index.html", context={'movies': movies})
+    movies = Movie.objects.order_by('-title')[0:10]
+    data = []
+    for movie in movies:
+        ratings = Rating.objects.filter(movie_id = movie.id)
+        if ratings.count() == 0:
+            avg_rating = '---'
+        else:
+            avg_rating = round(mean([ r.value for r in ratings]), 2)
+        data.append([movie, avg_rating])
+
+
+    return render(request=request, template_name="userview/index.html", context={'movies': data})
 
 
 def search(request : HttpRequest):
@@ -39,13 +49,27 @@ def search(request : HttpRequest):
         results = None
 
         if movie_title:
-            results = Movie.objects.filter(title__icontains=movie_title)
+            res = []
+            movies = Movie.objects.filter(title__icontains=movie_title)
+            for movie in movies:
+                ratings = Rating.objects.filter(movie_id = movie.id)
+                avg_rating = "---"
+                if ratings.count() != 0:    
+                    avg_rating = round(mean([ r.value for r in ratings]), 2)
+                res.append([movie, avg_rating])
+            
+            if len(res) > 0:
+                results = res                      
         
         elif genre:
             res = []
             for movie in Movie.objects.all():
                 if movie.genres.filter(name__icontains=genre).count() > 0: 
-                    res.append(movie)
+                    ratings = Rating.objects.filter(movie_id = movie.id)
+                    avg_rating = "---"
+                    if not ratings.count() == 0:    
+                        avg_rating = round(mean([ r.value for r in ratings]), 2)
+                    res.append([movie, avg_rating])
             
             if len(res) > 0:
                 results = res
@@ -59,9 +83,7 @@ def search(request : HttpRequest):
                 
                 avg_rating = round(mean([ r.value for r in ratings]), 2)
                 if avg_rating >= int(minimal_rating):
-                    res.append(movie)
-            
-                
+                    res.append([movie, avg_rating])            
             
             if len(res) > 0:
                 results = res
@@ -145,8 +167,9 @@ def movie(request : HttpRequest, *args, **kwargs):
         return render(request=request, template_name="userview/movie.html", context={'movie': False, 'id':pk})
     
     movie = Movie.objects.get(pk=pk)
-    comments = Comment.objects.filter(movie_id = movie.id)
+    comments = Comment.objects.filter(movie_id = movie.id).order_by('-id')
     ratings = Rating.objects.filter(movie_id = movie.id)
+    
     if ratings.count() == 0:
         avg_rating = '---'
     else:
