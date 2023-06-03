@@ -79,7 +79,7 @@ DATABASES = {
 'ENGINE': 'django.db.backends.mysql',
 'NAME': 'userview',
 'USER': 'username',
-'PASSWORD': '12345678'
+'PASSWORD': '' ## 12345678
 }
 }
 
