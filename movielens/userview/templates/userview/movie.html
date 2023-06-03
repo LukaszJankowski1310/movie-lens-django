@@ -1,0 +1,118 @@
+{% extends "userview/layout.html" %}
+{% block content %}
+
+
+<div class="container py-5 px-5">
+{% if not movie %}
+
+<!-- No movie with given ID -->
+<p>there is no {{ id }} movie</p>
+
+{% else %}
+
+
+<div class="row justify-content-center">
+<div class="col-8">
+
+    <div class="card">
+        <div class="row">
+            <div class="col-3">
+                <img src="..." class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-9">
+                <div class="card-body">
+                    <h1 class="card-title">{{ movie.title }}</h1>
+                    <p class="card-text">Rating: {{ avg_rating }}</p>
+                    <p class="card-text"><small class="text-muted"><a href="{{ movie.imdb_ref }}">IMDB reference</a></small></p>
+                    <div class="row justify-content-end">
+                        {% if user.is_superuser %}
+                            <div class="col-2"><a href="/edit/{{movie.id}}" class="btn btn-warning">Edit</a></div>
+                        {% endif %}
+
+                        <!-- <div class="col-4"><a href="" class="btn btn-primary">Rate this movie</a></div> -->
+                        {% if user.is_authenticated %}
+
+                            {% if not is_rated %}
+                                <div class="col-4"><a href="/rate_movie/{{ movie.id}}" class="btn btn-primary">Rate movie </a></div>
+                            {% else %}
+                                <div class="col-4"><p>Your rating: {{ rating_value }}</p></div>
+                            {% endif %}
+
+                        {% endif %}
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row my-5">
+        <h3>Genres</h3>
+        {% for genre in movie.genres.all %}
+            <div class="col-2">
+
+                <div class="card">
+                    <div class="card-body">{{ genre.name }}</div>
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="row my-5">
+        <h3>Comments</h3>
+
+        
+        {% if user.is_authenticated %}
+        <button class="btn btn-primary col-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Add Comment
+        </button>
+
+        <div class="collapse" id="collapseExample">
+            {% load crispy_forms_tags %}
+
+            <div class="container my-2">
+                <h3>Add new comment</h3>
+
+                <form method="POST" action="/post_comment">
+                    {% csrf_token %}
+
+                    {{ comment_form|crispy }}
+                    <button class="btn btn-primary" type="submit">Comment</button>
+                </form>
+
+            </div>
+        </div>
+
+        {% endif %}
+
+        {% for com in comments %}
+            <div class="card my-2">
+                <div class="card-body">
+                    <h4 class="card-title">{{  com.author }}</h4>
+                    <div class="row justify-content-evenly">
+                        <div class="col-6"><h5 class="card-subtitle mb-2 text-muted">{{ com.text }}</h5></div>
+                        <div class="col-6 text-end"><p>{{ com.date }}</p></div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+{% endif %}
+{% endblock %}
