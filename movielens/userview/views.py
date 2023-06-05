@@ -1,3 +1,4 @@
+import random
 from statistics import mean
 from django.conf import settings
 from django.shortcuts import render, redirect
@@ -10,7 +11,7 @@ from django.contrib.auth.forms import AuthenticationForm
 
 from django.contrib import messages
 
-from .models import Movie, Genre, Rating, Comment
+from .models import Image, Movie, Genre, Rating, Comment, get_similar_movies, get_most_liked_movies
 
 
 
@@ -28,8 +29,36 @@ def index(request : HttpRequest):
             avg_rating = round(mean([ r.value for r in ratings]), 2)
         data.append([movie, avg_rating])
 
+    rec_result = []
+    if request.user.is_authenticated:
+        ratings = Rating.objects.filter(user_id = request.user.id).filter(value__gte=3)
 
-    return render(request=request, template_name="userview/index.html", context={'movies': data})
+        print(ratings)
+
+        count = ratings.count()
+        print(count)
+        random_index = random.randint(0,count-1)
+        print("random index: ", random_index)
+        movie = ratings[random_index]
+
+        print(movie)
+
+        rec_result = get_similar_movies(movie.id, 0.7, 10)
+
+    else:
+        
+        recomendations = get_most_liked_movies(10)
+
+        print(recomendations)
+        for movie in recomendations:
+            ratings = Rating.objects.filter(movie_id = movie.id)
+            if ratings.count() == 0:
+                avg_rating = '---'
+            else:
+                avg_rating = round(mean([ r.value for r in ratings]), 2)
+            rec_result.append([movie.movie, avg_rating])
+
+    return render(request=request, template_name="userview/index.html", context={'movies': data, 'recomendations': rec_result})
 
 
 def search(request : HttpRequest):
@@ -169,13 +198,14 @@ def movie(request : HttpRequest, *args, **kwargs):
     movie = Movie.objects.get(pk=pk)
     comments = Comment.objects.filter(movie_id = movie.id).order_by('-id')
     ratings = Rating.objects.filter(movie_id = movie.id)
+    image = Image.objects.filter(movie_id= movie.id).first()
     
     if ratings.count() == 0:
         avg_rating = '---'
     else:
         avg_rating = round(mean([ r.value for r in ratings]), 2)
 
-    context = {'movie':movie, 'avg_rating': avg_rating, 'comments': comments}
+    context = {'movie':movie, 'avg_rating': avg_rating, 'comments': comments, 'image': image}
 
     user_rating = Rating.objects.filter(movie_id=movie.id, user_id=request.user.id)
     is_rated = False

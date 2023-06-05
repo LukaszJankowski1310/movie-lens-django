@@ -1,0 +1,135 @@
+[
+    {
+        "pk": 1,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Thriller"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Sport"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Fantasy"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Crime"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Romance"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Documentary"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Biography"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Sci-Fi"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "userview.genre",
+        "fields": {
+            "name": "War"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Horror"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "userview.genre",
+        "fields": {
+            "name": "History"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Drama"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Mystery"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Comedy"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Animation"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Family"
+        }
+    },
+    {
+        "pk": 17,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Music"
+        }
+    },
+    {
+        "pk": 18,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Action"
+        }
+    },
+    {
+        "pk": 19,
+        "model": "userview.genre",
+        "fields": {
+            "name": "Adventure"
+        }
+    }
+]

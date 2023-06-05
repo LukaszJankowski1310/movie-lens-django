@@ -35,13 +35,50 @@
     </div>
 
 
-    {% if user.is_superuser %}
+    {% if user.is_authenticated %}
     <div class="row justify-content-center my-5">
         <div class="col-8">
-            <h3>Recomendations</h3>
-            <p>Empty for now...</p>
+            <h3 class="my-5">Recomendations</h3>
+            
+
+            {% for movie in recomendations %}
+            <div class="card my-2">
+                <div class="card-body">
+                    <h4 class="card-title">{{  movie.title }}</h4>
+                    <div class="row justify-content-evenly">
+                        <div class="col-6 text-end"><a href="/movie/{{ movie.id }}" class="btn btn-primary text">Read more</a></div>
+                    </div>
+                    
+                </div>
+            </div>
+            {% endfor %} 
+
+
         </div>    
     </div>
+    {% else %}
+    <div class="row justify-content-center my-5">
+        <div class="col-8">
+            <h3 class="my-5">Recomendations</h3>
+            
+
+            {% for movie in recomendations %}
+            <div class="card my-2">
+                <div class="card-body">
+                    
+                    <div class="row justify-content-evenly">
+                        <h4 class="card-title">{{  movie.0.title }}</h4>
+                        <div class="col-6 text-end"><a href="/movie/{{ movie.0.id }}" class="btn btn-primary text">Read more</a></div>
+                    </div>
+                    
+                </div>
+            </div>
+            {% endfor %} 
+
+
+        </div>    
+    </div>
+
     {% endif %}
     
 </div>
